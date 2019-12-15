@@ -19,6 +19,17 @@ const App = () => {
     } 
   `
 
+  const ALL_BOOKS = gql`
+    {
+      allBooks  {
+        title
+        author
+        published
+        id
+      }
+    } 
+  `
+
   return (
     <div>
       <div>
@@ -32,7 +43,7 @@ const App = () => {
       />
 
       <Books
-        show={page === 'books'}
+        show={page === 'books'} result={useQuery(ALL_BOOKS)}
       />
 
       <NewBook
