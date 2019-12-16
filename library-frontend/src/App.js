@@ -48,10 +48,26 @@ const App = () => {
       }
     } 
   `
+
+  const EDIT_BORN = gql`
+  mutation editAuthor($name: String!, $born: Int!) {
+    editAuthor(name: $name, setBornTo: $born)  {
+      name
+      born
+    }
+  }
+`
+
   const [addBook] = useMutation(CREATE_BOOK, {
     onError: handleError,
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
   })
+
+  const [editBorn] = useMutation(EDIT_BORN, {
+    onError: handleError,
+    refetchQueries: [{ query: ALL_AUTHORS }]
+  })
+
   return (
     <div>
       <div>
@@ -61,7 +77,7 @@ const App = () => {
       </div>
 
       <Authors
-        show={page === 'authors'} result={useQuery(ALL_AUTHORS)}
+        show={page === 'authors'} result={useQuery(ALL_AUTHORS)} editBorn={editBorn}
       />
 
       <Books
