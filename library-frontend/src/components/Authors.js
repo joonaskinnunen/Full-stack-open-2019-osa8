@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 
 const Authors = ({ show, result, editBorn }) => {
+  console.log(result.data.allAuthors)
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
+
   if (!show) {
     return null
   }
@@ -12,8 +14,11 @@ const Authors = ({ show, result, editBorn }) => {
     await editBorn({
       variables: { name, born }
     })
-    setName('')
     setBorn('')
+  }
+
+  const handleChange = (event) => {
+    setName(event.target.value)
   }
 
   console.log(result)
@@ -23,6 +28,10 @@ const Authors = ({ show, result, editBorn }) => {
   }
 
   const authors = result.data.allAuthors
+
+  if(name.length === 0) {
+    setName(authors[0].name)
+  }
 
   return (
     <div>
@@ -51,10 +60,9 @@ const Authors = ({ show, result, editBorn }) => {
       <form onSubmit={submit}>
         <div>
           name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+          <select onChange={handleChange} value={name}>
+          {authors.map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+          </select>
         </div>
         <div>
           born
